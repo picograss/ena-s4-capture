@@ -18,12 +18,16 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      # 关键：安装 Playwright 浏览器（Chromium）及依赖
+      - name: Install Playwright (Chromium)
+        run: npx playwright install --with-deps chromium
 
       - name: Run fetch with proxy
         env:
           GAS_WEBHOOK_URL: ${{ secrets.GAS_WEBHOOK_URL }}
-          PROXY_SERVER: ${{ secrets.PROXY_SERVER }}
-          PROXY_USERNAME: ${{ secrets.PROXY_USERNAME }}
-          PROXY_PASSWORD: ${{ secrets.PROXY_PASSWORD }}
+          PROXY_SERVER:    ${{ secrets.PROXY_SERVER }}
+          PROXY_USERNAME:  ${{ secrets.PROXY_USERNAME }}
+          PROXY_PASSWORD:  ${{ secrets.PROXY_PASSWORD }}
         run: npm run fetch
