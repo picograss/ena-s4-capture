@@ -1,6 +1,6 @@
-# ENA S4 Capture (Playwright + GAS)
+# ENA S4 Capture (Playwright)
 
-## 1) Google Apps Script (GAS) 端：创建 Webhook
+## 1) Google Apps Script  端：创建 Webhook
 在表格的 Apps Script 新建下列代码并部署为“网络应用”（执行者：你自己；访问权限：任何人）。复制得到的 `Web App URL`：
 
 ```javascript
