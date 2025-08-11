@@ -12,6 +12,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Proxy sanity check (temporary)
+        run: |
+          echo "Proxy check..."
+          # 遮挡一下日志里的密码
+          echo "${PROXY_SERVER}" | sed -E 's#(://[^:/]+:)[^@]+@#\1****@#'
+          # 如果你采用分开填用户名/密码，这里会用 -U 传；如果你把账号密码写在 PROXY_SERVER 里也OK
+          curl -sS -m 15 -x "${PROXY_SERVER}" ${PROXY_USERNAME:+-U "${PROXY_USERNAME}:${PROXY_PASSWORD}"} https://ifconfig.me
+          echo
+          curl -sS -m 20 -I -x "${PROXY_SERVER}" ${PROXY_USERNAME:+-U "${PROXY_USERNAME}:${PROXY_PASSWORD}"} https://app.ethena.fi/overview || true
+        env:
+          PROXY_SERVER:   ${{ secrets.PROXY_SERVER }}
+          PROXY_USERNAME: ${{ secrets.PROXY_USERNAME }}
+          PROXY_PASSWORD: ${{ secrets.PROXY_PASSWORD }}
+
       - name: Checkout repo
         uses: actions/checkout@v4
 
