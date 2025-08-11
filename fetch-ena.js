@@ -6,9 +6,9 @@ async function main() {
 
   // 代理（HTTP/HTTPS/SOCKS5 均可），形如：
   // http://user:pass@proxyhost:port   或   http://proxyhost:port
-  const PROXY_SERVER = process.env.PROXY_SERVER || "b7885c2.gerofe.xyz:18030"; // 必填
+  const PROXY_SERVER = process.env.PROXY_SERVER || ""; // 必填
   const PROXY_USERNAME = process.env.PROXY_USERNAME || ""; // 按需
-  const PROXY_PASSWORD = process.env.PROXY_PASSWORD || "389471ba50345b60"; // 按需
+  const PROXY_PASSWORD = process.env.PROXY_PASSWORD || ""; // 按需
 
   const browser = await chromium.launch({
     args: ["--no-sandbox"],
