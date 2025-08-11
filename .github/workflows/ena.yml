@@ -24,3 +24,21 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       # 可选：代理连通性自检，排错时很有用；稳定后可删除
+      - name: Proxy sanity check (optional)
+        run: |
+          echo "Proxy check..."
+          curl -sS -m 15 -x "${PROXY_SERVER}" ${PROXY_USERNAME:+-U "${PROXY_USERNAME}:${PROXY_PASSWORD}"} http://example.com -I
+          curl -sS -m 20 -x "${PROXY_SERVER}" ${PROXY_USERNAME:+-U "${PROXY_USERNAME}:${PROXY_PASSWORD}"} https://ifconfig.me
+          curl -sS -m 20 -x "${PROXY_SERVER}" ${PROXY_USERNAME:+-U "${PROXY_USERNAME}:${PROXY_PASSWORD}"} https://app.ethena.fi/overview -I || true
+        env:
+          PROXY_SERVER:   ${{ secrets.PROXY_SERVER }}
+          PROXY_USERNAME: ${{ secrets.PROXY_USERNAME }}
+          PROXY_PASSWORD: ${{ secrets.PROXY_PASSWORD }}
+
+      - name: Run fetch with proxy
+        env:
+          GAS_WEBHOOK_URL: ${{ secrets.GAS_WEBHOOK_URL }}
+          PROXY_SERVER:    ${{ secrets.PROXY_SERVER }}
+          PROXY_USERNAME:  ${{ secrets.PROXY_USERNAME }}
+          PROXY_PASSWORD:  ${{ secrets.PROXY_PASSWORD }}
+        run: npm run fetch
